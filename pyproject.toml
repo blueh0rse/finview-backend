@@ -1,0 +1,18 @@
+[project]
+name = "finview-backend"
+version = "0.1.0"
+description = "Finary-like"
+authors = [
+    {name = "blueh0rse",email = "110935049+blueh0rse@users.noreply.github.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    "fastapi[standard] (>=0.119.1,<0.120.0)",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.1",
+]
