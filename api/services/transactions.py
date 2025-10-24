@@ -7,7 +7,7 @@ from api.schemas.transactions import TransactionORM
 
 transactions = [
     Transaction(
-        id=uuid.UUID('16fd2706-8baf-433b-82eb-8c7fada847da'),
+        id=uuid.UUID("16fd2706-8baf-433b-82eb-8c7fada847da"),
         asset="BTC",
         operation="buy",
         amount=500.0,
