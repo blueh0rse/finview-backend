@@ -11,6 +11,7 @@ requires-python = ">=3.10"
 dependencies = [
     "fastapi[standard] (>=0.119.1,<0.120.0)",
     "psycopg2>=2.9.11",
+    "python-dotenv>=1.1.1",
     "sqlalchemy>=2.0.44",
 ]
 
