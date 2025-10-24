@@ -13,3 +13,6 @@ class Transaction(BaseModel):
     currency: str
     date: datetime
     comment: str | None = None
+
+    class Config:
+        from_attributes = True
