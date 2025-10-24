@@ -1,5 +1,5 @@
 dev:
-	uv run fastapi dev main.py
+	PYTHONPATH=. uv run fastapi dev main.py
 
 check:
 	uv run ruff check .
