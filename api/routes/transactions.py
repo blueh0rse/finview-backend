@@ -34,11 +34,11 @@ async def get_transaction(transaction_id: uuid.UUID):
 
 
 @router.post("/transactions", response_model=Transaction, status_code=201)
-async def create_new_transaction(transaction: TransactionCreate):
+async def create_transaction(transaction: TransactionCreate):
     print(
         f"[REQ] POST /transactions {transaction.asset} - {transaction.operation} - {transaction.amount}{transaction.currency}"
     )
-    created_transaction = await create_transaction(transaction)
+    created_transaction = await create_one_transaction(transaction)
     if created_transaction is None:
         raise HTTPException(status_code=400, detail="Failed to create transaction")
     return created_transaction

@@ -60,7 +60,7 @@ async def get_transaction_by_id(transaction_id: uuid.UUID) -> Transaction:
     return None
 
 
-async def create_transaction(transaction: Transaction) -> Transaction:
+async def create_one_transaction(transaction: Transaction) -> Transaction:
     print(
         f"[TRANSACTION] CREATE {transaction.asset} - {transaction.operation} - {transaction.amount}{transaction.currency}"
     )
