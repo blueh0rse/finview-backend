@@ -15,7 +15,7 @@ router = APIRouter(tags=["Transactions"])
 @router.get("/transactions", response_model=List[Transaction])
 async def get_transactions():
     """Retrieve all transactions"""
-    print("[LOG] GET /transactions")
+    print("[REQ] GET /transactions")
     transactions = await get_all_transactions()
     if not transactions:
         raise HTTPException(status_code=404, detail="No transactions found")
@@ -25,7 +25,7 @@ async def get_transactions():
 @router.get("/transactions/{transaction_id}", response_model=Transaction)
 async def get_transaction(transaction_id: uuid.UUID):
     """Retrieve a specific transaction by ID"""
-    print(f"[LOG] GET /transaction/{transaction_id}")
+    print(f"[REQ] GET /transactions/{transaction_id}")
     transaction = await get_transaction_by_id(transaction_id)
     if not transaction:
         raise HTTPException(status_code=404, detail="Transaction not found")
@@ -35,7 +35,7 @@ async def get_transaction(transaction_id: uuid.UUID):
 @router.post("/transactions", response_model=Transaction, status_code=201)
 async def create_new_transaction(transaction: TransactionCreate):
     print(
-        f"[LOG] POST /transactions {transaction.asset} - {transaction.operation} - {transaction.amount}{transaction.currency}"
+        f"[REQ] POST /transactions {transaction.asset} - {transaction.operation} - {transaction.amount}{transaction.currency}"
     )
     created_transaction = await create_transaction(transaction)
     if created_transaction is None:

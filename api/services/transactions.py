@@ -43,7 +43,7 @@ transactions = [
 
 
 async def get_all_transactions() -> List[Transaction]:
-    print("[LOG] SERVICE: get_all_transactions")
+    print("[TRANSACTION] GET ALL")
     db = SessionLocal()
     try:
         transactions = db.query(TransactionORM).all()
@@ -53,7 +53,7 @@ async def get_all_transactions() -> List[Transaction]:
 
 
 async def get_transaction_by_id(transaction_id: uuid.UUID) -> Transaction:
-    print(f"[LOG] SERVICE: get_transaction_by_id {transaction_id}")
+    print(f"[TRANSACTION] GET BY ID {transaction_id}")
     for tx in transactions:
         if tx.id == transaction_id:
             return tx
