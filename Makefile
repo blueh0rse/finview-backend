@@ -9,3 +9,6 @@ lint:
 
 format:
 	uv run ruff format .
+
+db:
+	docker compose up
