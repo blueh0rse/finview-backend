@@ -2,8 +2,12 @@ from typing import List
 import uuid
 from fastapi import APIRouter
 from fastapi import HTTPException
-from api.models.transactions import Transaction
-from api.services.transactions import get_all_transactions, get_transaction_by_id
+from api.models.transactions import Transaction, TransactionCreate
+from api.services.transactions import (
+    create_transaction,
+    get_all_transactions,
+    get_transaction_by_id,
+)
 
 router = APIRouter(tags=["Transactions"])
 
@@ -28,11 +32,12 @@ async def get_transaction(transaction_id: uuid.UUID):
     return transaction
 
 
-# @router.post("/transaction", response_model=Transaction, status_code=201)
-# async def create_new_transaction(transaction: TransactionCreate):
-#     """Create a new transaction"""
-#     print(f"[LOG] POST /transaction {transaction.asset} - {transaction.operation} - {transaction.amount}")
-#     created_transaction = await create_transaction(transaction)
-#     if created_transaction is None:
-#         raise HTTPException(status_code=400, detail="Failed to create transaction")
-#     return created_transaction
+@router.post("/transactions", response_model=Transaction, status_code=201)
+async def create_new_transaction(transaction: TransactionCreate):
+    print(
+        f"[LOG] POST /transactions {transaction.asset} - {transaction.operation} - {transaction.amount}{transaction.currency}"
+    )
+    created_transaction = await create_transaction(transaction)
+    if created_transaction is None:
+        raise HTTPException(status_code=400, detail="Failed to create transaction")
+    return created_transaction

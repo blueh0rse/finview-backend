@@ -58,3 +58,22 @@ async def get_transaction_by_id(transaction_id: uuid.UUID) -> Transaction:
         if tx.id == transaction_id:
             return tx
     return None
+
+
+async def create_transaction(transaction: Transaction) -> Transaction:
+    print(
+        f"[TRANSACTION] CREATE {transaction.asset} - {transaction.operation} - {transaction.amount}{transaction.currency}"
+    )
+    db = SessionLocal()
+    try:
+        tx = TransactionORM(**transaction.model_dump())
+        db.add(tx)
+        db.commit()
+        db.refresh(tx)
+        return Transaction.model_validate(tx)
+    except Exception as e:
+        db.rollback()
+        print("[ERROR] create_transaction:", e)
+        raise
+    finally:
+        db.close()
