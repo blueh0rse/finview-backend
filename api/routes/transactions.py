@@ -4,7 +4,8 @@ from fastapi import APIRouter
 from fastapi import HTTPException
 from api.models.transactions import Transaction, TransactionCreate
 from api.services.transactions import (
-    create_transaction,
+    create_one_transaction,
+    delete_one_transaction,
     get_all_transactions,
     get_transaction_by_id,
 )
@@ -41,3 +42,12 @@ async def create_new_transaction(transaction: TransactionCreate):
     if created_transaction is None:
         raise HTTPException(status_code=400, detail="Failed to create transaction")
     return created_transaction
+
+
+@router.delete("/transactions/{transaction_id}", status_code=204)
+async def delete_transaction(transaction_id: uuid.UUID):
+    print(f"[REQ] DELETE /transactions/{transaction_id}")
+    deleted = await delete_one_transaction(transaction_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    return deleted

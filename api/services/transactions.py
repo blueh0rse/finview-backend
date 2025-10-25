@@ -77,3 +77,23 @@ async def create_transaction(transaction: Transaction) -> Transaction:
         raise
     finally:
         db.close()
+
+
+async def delete_one_transaction(transaction_id: uuid.UUID) -> bool:
+    print(f"[TRANSACTION] DELETE {transaction_id}")
+    db = SessionLocal()
+    try:
+        tx = (
+            db.query(TransactionORM).filter(TransactionORM.id == transaction_id).first()
+        )
+        if not tx:
+            return False
+        db.delete(tx)
+        db.commit()
+        return True
+    except Exception as e:
+        db.rollback()
+        print("[ERROR] delete_transaction:", e)
+        raise
+    finally:
+        db.close()
