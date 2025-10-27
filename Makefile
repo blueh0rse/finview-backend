@@ -1,5 +1,8 @@
-dev:
-	PYTHONPATH=. uv run fastapi dev main.py
+run:
+	docker compose up --build
+
+api:
+	uv run fastapi dev api/main.py
 
 check:
 	uv run ruff check .
@@ -10,5 +13,5 @@ lint:
 format:
 	uv run ruff format .
 
-db:
-	docker compose up
+clean:
+	docker compose down
