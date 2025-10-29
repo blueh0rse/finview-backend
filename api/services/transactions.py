@@ -48,6 +48,28 @@ async def create_one_transaction(transaction: Transaction) -> Transaction:
         db.close()
 
 
+async def update_one_transaction(transaction: Transaction) -> Transaction:
+    print(f"[TRANSACTION] UPDATE {transaction.id}")
+    db = SessionLocal()
+    try:
+        tx = (
+            db.query(TransactionORM).filter(TransactionORM.id == transaction.id).first()
+        )
+        if not tx:
+            return False
+        for key, value in transaction.model_dump().items():
+            setattr(tx, key, value)
+        db.commit()
+        db.refresh(tx)
+        return Transaction.model_validate(tx)
+    except Exception as e:
+        db.rollback()
+        print("[ERROR] update_transaction:", e)
+        raise
+    finally:
+        db.close()
+
+
 async def delete_one_transaction(transaction_id: uuid.UUID) -> bool:
     print(f"[TRANSACTION] DELETE {transaction_id}")
     db = SessionLocal()
