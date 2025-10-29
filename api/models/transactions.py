@@ -7,7 +7,7 @@ from datetime import datetime
 class Transaction(BaseModel):
     id: uuid.UUID
     asset: str
-    operation: str
+    operation: Literal["buy", "sell"]
     amount: float
     quantity: float
     unit_price: float
@@ -21,7 +21,7 @@ class Transaction(BaseModel):
 
 class TransactionCreate(BaseModel):
     asset: str
-    operation: str
+    operation: Literal["buy", "sell"]
     amount: float
     quantity: float
     unit_price: float
