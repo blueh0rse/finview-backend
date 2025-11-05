@@ -30,6 +30,11 @@ services:
       - .env
     depends_on:
       - db
+    command: >
+      sh -c "
+        uv run alembic upgrade head &&
+        uv run fastapi dev api/main.py --host 0.0.0.0
+      "
 
 volumes:
   postgres_data:
