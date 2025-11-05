@@ -15,10 +15,10 @@ router = APIRouter(tags=["Transactions"])
 
 
 @router.get("/transactions", response_model=List[Transaction])
-async def get_transactions():
+async def get_transactions(skip: int = 0, limit: int = 10):
     """Retrieve all transactions"""
     print("[REQ] GET /transactions")
-    transactions = await get_all_transactions()
+    transactions = await get_all_transactions(skip, limit)
     if not transactions:
         raise HTTPException(status_code=404, detail="No transactions found")
     return transactions

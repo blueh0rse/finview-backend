@@ -4,12 +4,16 @@ from api.db.db import SessionLocal
 from api.models.transactions import Transaction
 from api.schemas.transactions import TransactionORM
 
+MAX_TRANSACTIONS = 100
 
-async def get_all_transactions() -> List[Transaction]:
+
+async def get_all_transactions(skip, limit) -> List[Transaction]:
     print("[TRANSACTION] GET ALL")
+    if limit > MAX_TRANSACTIONS:
+        limit = MAX_TRANSACTIONS
     db = SessionLocal()
     try:
-        transactions = db.query(TransactionORM).all()
+        transactions = db.query(TransactionORM).offset(skip).limit(limit).all()
         return [Transaction.model_validate(tx) for tx in transactions]
     finally:
         db.close()
