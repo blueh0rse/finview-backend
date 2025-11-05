@@ -1,3 +1,5 @@
+.PHONY: api check lint format clean db stop run
+
 run:
 	docker compose up --build
 
@@ -15,3 +17,6 @@ format:
 
 clean:
 	docker compose down
+
+db:
+	docker compose up -d db adminer
