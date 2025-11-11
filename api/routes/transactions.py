@@ -20,7 +20,7 @@ async def get_transactions(skip: int = 0, limit: int = 10):
     print("[REQ] GET /transactions")
     transactions = await get_all_transactions(skip, limit)
     if not transactions:
-        raise HTTPException(status_code=404, detail="No transactions found")
+        raise HTTPException(status_code=204)
     return transactions
 
 
