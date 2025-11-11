@@ -1,20 +1,20 @@
 from sqlalchemy import Column, String, Float, DateTime
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import declarative_base
 from datetime import datetime
 import uuid
 from api.db.db import Base
 import enum
 
-Base = declarative_base()
 
 class OperationEnum(str, enum.Enum):
     BUY = "buy"
     SELL = "sell"
 
+
 class CurrencyEnum(str, enum.Enum):
     EUR = "EUR"
     USD = "USD"
+
 
 class TransactionORM(Base):
     __tablename__ = "transactions"
