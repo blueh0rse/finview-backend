@@ -17,19 +17,7 @@ Build everything
 make run
 ```
 
-## Commands
-
-```sh
-make run            -> start API and DB containers
-make clean          -> clean API and DB containers
-
-make api            -> start dev API server
-make db             -> start DB container
-
-make check          -> lint code with ruff
-make lint           -> lint and fix errors with ruff
-make format         -> format code with ruff
-```
+> See `Makefile` for the complete list!
 
 ## Stack
 
@@ -37,3 +25,11 @@ make format         -> format code with ruff
 - FastAPI
 - SQLAlchemy
 - PostgreSQL
+
+## Changelog
+
+### v1.0.0
+
+- Implement CRUD operations for Transaction.
+- Display the total portfolio value (net invested amount).
+- Show the portfolio allocation by asset (quantity × unit price, with percentage of total).
