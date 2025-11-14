@@ -3,8 +3,8 @@ from api.db.db import SessionLocal
 from api.schemas.transactions import OperationEnum, TransactionORM
 
 
-async def calc_portefolio_value() -> float:
-    print("[PORTEFOLIO] CALC VALUE")
+async def calc_portfolio_value() -> float:
+    print("[portfolio] CALC VALUE")
     db = SessionLocal()
     try:
         buy_total = (
@@ -27,7 +27,7 @@ async def calc_portefolio_value() -> float:
 
 
 async def calc_portfolio_allocation():
-    print("[PORTEFOLIO] CALC ALLOCATION")
+    print("[portfolio] CALC ALLOCATION")
     db = SessionLocal()
     try:
         # net quantity

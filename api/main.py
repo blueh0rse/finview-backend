@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import portefolio, transactions
+from api.routes import portfolio, transactions
 
 app = FastAPI()
 
@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 app.include_router(transactions.router)
-app.include_router(portefolio.router)
+app.include_router(portfolio.router)
 
 
 @app.get("/")
