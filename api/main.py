@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import portfolio, transactions
+from api.routes import assets, portfolio, transactions
 import os
 from dotenv import load_dotenv
 
@@ -28,6 +28,7 @@ app.add_middleware(
 
 app.include_router(transactions.router)
 app.include_router(portfolio.router)
+app.include_router(assets.router)
 
 
 @app.get("/")
