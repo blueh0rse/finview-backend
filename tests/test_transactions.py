@@ -3,7 +3,7 @@ import uuid
 from fastapi.testclient import TestClient
 from api.main import app
 
-# List of test:
+# List of tests:
 # - create and get a transaction
 # - get all transactions
 # - update a transaction (idempotency)
