@@ -57,3 +57,21 @@ async def create_one_asset(asset: AssetCreate) -> Asset:
         raise
     finally:
         db.close()
+
+
+async def delete_one_asset(symbol: str) -> bool:
+    print(f"[ASSET] DELETE {symbol}")
+    db = SessionLocal()
+    try:
+        tx = db.query(AssetORM).filter(AssetORM.symbol == symbol.upper()).first()
+        if not tx:
+            return False
+        db.delete(tx)
+        db.commit()
+        return True
+    except Exception as e:
+        db.rollback()
+        print("[ERROR] delete_asset:", e)
+        raise
+    finally:
+        db.close()

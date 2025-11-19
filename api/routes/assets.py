@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from api.models.assets import Asset, AssetCreate
 from api.services.assets import (
     create_one_asset,
+    delete_one_asset,
     get_all_assets,
     get_asset_by_symbol,
 )
@@ -45,3 +46,13 @@ async def create_asset(asset: AssetCreate):
     except ValueError as e:
         # asset symbol already exists
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.delete("/assets/{symbol}", status_code=204)
+async def delete_asset(symbol: str):
+    """Delete a specific asset by symbol"""
+    print(f"[REQ] DELETE /assets/{symbol}")
+    deleted = await delete_one_asset(symbol)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Asset not found")
+    return deleted
