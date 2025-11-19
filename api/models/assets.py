@@ -4,7 +4,6 @@ from datetime import datetime
 
 
 class Asset(BaseModel):
-    id: UUID
     symbol: str
     name: str
     category: str

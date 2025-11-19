@@ -22,11 +22,11 @@ async def get_all_assets(skip, limit) -> List[Asset]:
         db.close()
 
 
-async def get_asset_by_id(asset_id: uuid.UUID) -> Asset:
-    print(f"[ASSET] GET BY ID {asset_id}")
+async def get_asset_by_symbol(asset_symbol: str) -> Asset:
+    print(f"[ASSET] GET BY SYMBOL {asset_symbol}")
     db = SessionLocal()
     try:
-        tx = db.query(AssetORM).filter(AssetORM.id == asset_id).first()
+        tx = db.query(AssetORM).filter(AssetORM.symbol == asset_symbol.upper()).first()
         if not tx:
             return False
         return Asset.model_validate(tx)
@@ -38,6 +38,11 @@ async def create_one_asset(asset: AssetCreate) -> Asset:
     print(f"[ASSET] CREATE {asset.symbol} - {asset.category}")
     # ensure asset symbol is uppercase
     asset.symbol = asset.symbol.upper()
+
+    # ensure asset symbol is unique
+    existing_asset = await get_asset_by_symbol(asset.symbol)
+    if existing_asset:
+        raise ValueError(f"Asset {asset.symbol} already exists")
 
     db = SessionLocal()
     try:
