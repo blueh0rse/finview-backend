@@ -1,8 +1,9 @@
 from typing import List
+import uuid
 from fastapi import APIRouter
 from fastapi import HTTPException
 from api.models.assets import Asset, AssetCreate
-from api.services.assets import create_one_asset, get_all_assets
+from api.services.assets import create_one_asset, get_all_assets, get_asset_by_id
 
 
 router = APIRouter(tags=["Assets"])
@@ -16,6 +17,16 @@ async def get_assets(skip: int = 0, limit: int = 10):
     if not assets:
         raise HTTPException(status_code=204)
     return assets
+
+
+@router.get("/assets/{asset_id}", response_model=Asset)
+async def get_asset(asset_id: uuid.UUID):
+    """Retrieve a specific asset by ID"""
+    print(f"[REQ] GET /assets/{asset_id}")
+    asset = await get_asset_by_id(asset_id)
+    if not asset:
+        raise HTTPException(status_code=404, detail="Asset not found")
+    return asset
 
 
 @router.post("/assets", response_model=Asset, status_code=201)

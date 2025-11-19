@@ -1,4 +1,5 @@
 from typing import List
+import uuid
 
 from api.db.db import SessionLocal
 from api.models.assets import Asset, AssetCreate
@@ -17,6 +18,18 @@ async def get_all_assets(skip, limit) -> List[Asset]:
     try:
         assets = db.query(AssetORM).offset(skip).limit(limit).all()
         return [Asset.model_validate(tx) for tx in assets]
+    finally:
+        db.close()
+
+
+async def get_asset_by_id(asset_id: uuid.UUID) -> Asset:
+    print(f"[ASSET] GET BY ID {asset_id}")
+    db = SessionLocal()
+    try:
+        tx = db.query(AssetORM).filter(AssetORM.id == asset_id).first()
+        if not tx:
+            return False
+        return Asset.model_validate(tx)
     finally:
         db.close()
 
