@@ -1,13 +1,13 @@
 from typing import List
-import uuid
 from fastapi import APIRouter
 from fastapi import HTTPException
-from api.models.assets import Asset, AssetCreate
+from api.models.assets import Asset, AssetCreate, AssetUpdate
 from api.services.assets import (
     create_one_asset,
     delete_one_asset,
     get_all_assets,
     get_asset_by_symbol,
+    update_one_asset,
 )
 
 
@@ -46,6 +46,16 @@ async def create_asset(asset: AssetCreate):
     except ValueError as e:
         # asset symbol already exists
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.put("/assets/{symbol}", response_model=Asset)
+async def update_asset(symbol: str, asset: AssetUpdate):
+    """Update an existing asset by symbol"""
+    print(f"[REQ] PUT /assets/{symbol}")
+    try:
+        return await update_one_asset(symbol, asset)
+    except ValueError:
+        raise HTTPException(404, "Asset not found")
 
 
 @router.delete("/assets/{symbol}", status_code=204)

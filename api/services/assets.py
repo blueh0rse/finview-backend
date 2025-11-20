@@ -1,12 +1,22 @@
 from typing import List
 import uuid
 
+from psycopg2 import IntegrityError
+
 from api.db.db import SessionLocal
-from api.models.assets import Asset, AssetCreate
+from api.models.assets import Asset, AssetCreate, AssetUpdate
 from api.schemas.assets import AssetORM
 
 
 MAX_ASSETS = 100
+
+
+class AssetNotFoundError(Exception):
+    pass
+
+
+class AssetConflictError(Exception):
+    pass
 
 
 async def get_all_assets(skip, limit) -> List[Asset]:
@@ -55,6 +65,44 @@ async def create_one_asset(asset: AssetCreate) -> Asset:
         db.rollback()
         print("[ERROR] create_asset:", e)
         raise
+    finally:
+        db.close()
+
+
+async def update_one_asset(current_symbol: str, asset: AssetUpdate) -> Asset:
+    print(f"[ASSET] UPDATE {current_symbol.upper()}")
+    db = SessionLocal()
+    try:
+        symbol = current_symbol.upper()
+
+        existing_asset = db.query(AssetORM).filter(AssetORM.symbol == symbol).first()
+        if not existing_asset:
+            raise AssetNotFoundError(f"Asset '{symbol}' not found")
+
+        # ensure asset symbol is uppercase
+        if asset.symbol:
+            asset.symbol = asset.symbol.upper()
+
+        # only provided fields will be updated
+        updates = asset.model_dump(exclude_unset=True)
+
+        # apply updates
+        for field, value in updates.items():
+            setattr(existing_asset, field, value)
+
+        db.commit()
+        db.refresh(existing_asset)
+
+        return Asset.model_validate(existing_asset)
+
+    except IntegrityError:
+        db.rollback()
+        raise AssetConflictError("Asset with this unique field already exists")
+
+    except Exception:
+        db.rollback()
+        raise
+
     finally:
         db.close()
 

@@ -20,3 +20,11 @@ class AssetCreate(BaseModel):
     category: str
     current_price: float | None = None
     updated_at: datetime | None = None
+
+
+class AssetUpdate(BaseModel):
+    symbol: str | None = None
+    name: str | None = None
+    category: str | None = None
+    current_price: float | None = None
+    updated_at: datetime | None = None
