@@ -4,7 +4,6 @@ import os
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from api.db.db import Base
-import api.db.models
 
 from alembic import context
 

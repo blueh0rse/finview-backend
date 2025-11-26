@@ -1,5 +1,4 @@
 from typing import List
-import uuid
 
 from psycopg2 import IntegrityError
 
