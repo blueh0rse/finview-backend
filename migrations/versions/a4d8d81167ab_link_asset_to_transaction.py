@@ -20,6 +20,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """Upgrade schema."""
+    op.add_column('transactions', sa.Column('asset_symbol', sa.String(), nullable=False))
     op.create_foreign_key(
         'fk_transactions_assets', 
         'transactions', 
@@ -33,3 +34,4 @@ def upgrade() -> None:
 def downgrade() -> None:
     """Downgrade schema."""
     op.drop_constraint('fk_transactions_assets', 'transactions', type_='foreignkey')
+    op.drop_column('transactions', 'asset_symbol')
