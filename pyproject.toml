@@ -22,3 +22,9 @@ dev = [
     "pytest>=8.4.2",
     "ruff>=0.14.1",
 ]
+
+[tool.ruff]
+exclude = [
+    "api/db/models.py",
+    "migrations/*",
+]
