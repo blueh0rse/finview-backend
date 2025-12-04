@@ -31,11 +31,11 @@ async def get_all_assets(skip, limit) -> List[Asset]:
         db.close()
 
 
-async def get_asset_by_symbol(asset_symbol: str) -> Asset:
-    print(f"[ASSET] GET BY SYMBOL {asset_symbol}")
+async def get_asset_by_symbol(symbol: str) -> Asset:
+    print(f"[ASSET] GET BY SYMBOL {symbol}")
     db = SessionLocal()
     try:
-        tx = db.query(AssetORM).filter(AssetORM.symbol == asset_symbol.upper()).first()
+        tx = db.query(AssetORM).filter(AssetORM.symbol == symbol.upper()).first()
         if not tx:
             return False
         return Asset.model_validate(tx)

@@ -38,7 +38,7 @@ async def get_transaction(transaction_id: uuid.UUID):
 async def create_transaction(transaction: TransactionCreate):
     """Create a new transaction"""
     print(
-        f"[REQ] POST /transactions {transaction.asset} - {transaction.operation} - {transaction.amount}{transaction.currency}"
+        f"[REQ] POST /transactions {transaction.asset_symbol} - {transaction.operation} - {transaction.amount}{transaction.currency}"
     )
     created_transaction = await create_one_transaction(transaction)
     if created_transaction is None:

@@ -6,7 +6,7 @@ from datetime import datetime
 
 class Transaction(BaseModel):
     id: uuid.UUID
-    asset: str
+    asset_symbol: str
     operation: Literal["buy", "sell"]
     amount: float
     quantity: float
@@ -20,7 +20,7 @@ class Transaction(BaseModel):
 
 
 class TransactionCreate(BaseModel):
-    asset: str
+    asset_symbol: str
     operation: Literal["buy", "sell"]
     amount: float
     quantity: float
@@ -29,9 +29,12 @@ class TransactionCreate(BaseModel):
     date: datetime
     comment: str | None = None
 
+    class Config:
+        from_attributes = True
+
 
 class TransactionUpdate(BaseModel):
-    asset: str | None = None
+    asset_symbol: str | None = None
     operation: Literal["buy", "sell"] | None = None
     amount: float | None = None
     quantity: float | None = None

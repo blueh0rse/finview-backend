@@ -35,7 +35,7 @@ async def get_transaction_by_id(transaction_id: uuid.UUID) -> Transaction:
 
 async def create_one_transaction(transaction: Transaction) -> Transaction:
     print(
-        f"[TRANSACTION] CREATE {transaction.asset} - {transaction.operation} - {transaction.amount}{transaction.currency}"
+        f"[TRANSACTION] CREATE {transaction.asset_symbol} - {transaction.operation} - {transaction.amount}{transaction.currency}"
     )
     db = SessionLocal()
     try:
