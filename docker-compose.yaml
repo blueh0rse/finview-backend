@@ -30,8 +30,11 @@ services:
       - .env
     depends_on:
       - db
+    volumes:
+      - .:/app 
     command: >
       sh -c "
+        sleep 1 && 
         uv run alembic upgrade head &&
         uv run fastapi dev api/main.py --host 0.0.0.0
       "
