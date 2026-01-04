@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routes import assets, portfolio, transactions
+from src.api.routes import assets, portfolio, transactions
 import os
 from dotenv import load_dotenv
 

@@ -1,8 +1,8 @@
 from typing import List
 from fastapi import APIRouter
 from fastapi import HTTPException
-from api.models.assets import Asset, AssetCreate, AssetUpdate
-from api.services.assets import (
+from src.api.models.assets import Asset, AssetCreate, AssetUpdate
+from src.api.services.assets import (
     create_one_asset,
     delete_one_asset,
     get_all_assets,

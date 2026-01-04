@@ -2,8 +2,8 @@ from typing import List
 import uuid
 from fastapi import APIRouter
 from fastapi import HTTPException
-from api.models.transactions import Transaction, TransactionCreate, TransactionUpdate
-from api.services.transactions import (
+from src.api.models.transactions import Transaction, TransactionCreate, TransactionUpdate
+from src.api.services.transactions import (
     create_one_transaction,
     delete_one_transaction,
     get_all_transactions,

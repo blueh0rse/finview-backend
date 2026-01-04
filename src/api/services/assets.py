@@ -2,9 +2,9 @@ from typing import List
 
 from psycopg2 import IntegrityError
 
-from api.db.db import SessionLocal
-from api.models.assets import Asset, AssetCreate, AssetUpdate
-from api.schemas.assets import AssetORM
+from src.api.db.db import SessionLocal
+from src.api.models.assets import Asset, AssetCreate, AssetUpdate
+from src.api.schemas.assets import AssetORM
 
 
 MAX_ASSETS = 100

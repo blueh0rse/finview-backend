@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from api.services.portfolio import calc_portfolio_value, calc_portfolio_allocation
+from src.api.services.portfolio import calc_portfolio_value, calc_portfolio_allocation
 
 router = APIRouter(tags=["portfolio"])
 

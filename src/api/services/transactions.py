@@ -1,8 +1,8 @@
 from typing import List
 import uuid
-from api.db.db import SessionLocal
-from api.models.transactions import Transaction
-from api.schemas.transactions import TransactionORM
+from src.api.db.db import SessionLocal
+from src.api.models.transactions import Transaction
+from src.api.schemas.transactions import TransactionORM
 
 MAX_TRANSACTIONS = 100
 

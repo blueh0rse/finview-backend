@@ -1,7 +1,7 @@
 from datetime import datetime
 import uuid
 from fastapi.testclient import TestClient
-from api.main import app
+from src.api.main import app
 
 # List of tests:
 # - create and get a transaction

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Float, DateTime
 from sqlalchemy.orm import relationship
-from api.db.db import Base
+from src.api.db.db import Base
 
 
 class AssetORM(Base):

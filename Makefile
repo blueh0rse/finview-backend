@@ -3,8 +3,11 @@
 run:
 	docker compose up
 
+stop:
+	docker compose down
+
 api:
-	uv run fastapi dev api/main.py
+	uv run fastapi dev src/api/main.py
 
 check:
 	uv run ruff check .
@@ -16,7 +19,7 @@ format:
 	uv run ruff format .
 
 clean:
-	docker compose down
+	docker compose down -v
 
 db:
 	docker compose up db adminer

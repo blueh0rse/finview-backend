@@ -1,6 +1,6 @@
 from sqlalchemy import case, func
-from api.db.db import SessionLocal
-from api.schemas.transactions import OperationEnum, TransactionORM
+from src.api.db.db import SessionLocal
+from src.api.schemas.transactions import OperationEnum, TransactionORM
 
 
 async def calc_portfolio_value() -> float:
