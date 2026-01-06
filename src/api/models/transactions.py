@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Literal
 from uuid import UUID
 from pydantic import BaseModel, StrictStr, StrictFloat, field_validator
@@ -46,7 +46,14 @@ class TransactionValidators:
     @field_validator("date")
     @classmethod
     def validate_date_not_future(cls, v: datetime | None) -> datetime | None:
-        if v and v > datetime.now(datetime.timezone.utc):
+        if v is None:
+            return v
+        # Normalize naive datetimes to UTC and convert aware datetimes to UTC
+        if v.tzinfo is None:
+            v = v.replace(tzinfo=timezone.utc)
+        else:
+            v = v.astimezone(timezone.utc)
+        if v > datetime.now(tz=timezone.utc):
             raise ValueError("date cannot be in the future")
         return v
 

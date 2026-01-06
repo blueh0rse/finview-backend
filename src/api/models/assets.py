@@ -1,5 +1,5 @@
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from pydantic import BaseModel, StrictStr, StrictFloat, field_validator
 
 # 2–10 uppercase letters, no spaces or special characters (e.g. BTC, ETH)
@@ -44,7 +44,14 @@ class AssetValidators:
     @field_validator("updated_at")
     @classmethod
     def validate_updated_at(cls, v: datetime | None) -> datetime | None:
-        if v and v > datetime.now(datetime.timezone.utc):
+        if v is None:
+            return v
+        # Normalize naive datetimes to UTC and convert aware datetimes to UTC
+        if v.tzinfo is None:
+            v = v.replace(tzinfo=timezone.utc)
+        else:
+            v = v.astimezone(timezone.utc)
+        if v > datetime.now(tz=timezone.utc):
             raise ValueError("updated_at cannot be in the future")
         return v
 
