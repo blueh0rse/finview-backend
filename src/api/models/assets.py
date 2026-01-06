@@ -8,8 +8,8 @@ ASSET_SYMBOL_REGEX = re.compile(r"^[A-Z]{2,10}$")
 # 2–50 characters, alphanumeric plus basic punctuation (.,'- and spaces)
 ASSET_NAME_REGEX = re.compile(r"^[A-Za-z0-9 .,'-]{2,50}$")
 
-# uppercase snake_case identifier (e.g. CRYPTO, STOCK_ETF, COMMODITY)
-ASSET_CATEGORY_REGEX = re.compile(r"^[A-Z_]{3,30}$")
+# 3–30 characters, alphanumeric and underscores (e.g. Stock, CRYPTO)
+ASSET_CATEGORY_REGEX = re.compile(r"^[A-ZA-Za-z_]{3,30}$")
 
 
 class AssetValidators:
