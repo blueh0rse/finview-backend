@@ -25,6 +25,7 @@ dev = [
 
 [tool.ruff]
 exclude = [
-    "api/db/models.py",
-    "migrations/*",
+    "scripts/*",
+    "src/api/db/models.py",
+    "src/migrations/*",
 ]
