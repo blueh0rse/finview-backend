@@ -72,12 +72,12 @@ class TransactionBase(BaseModel, TransactionValidators):
 class Transaction(TransactionBase):
     id: UUID
 
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 
 class TransactionCreate(TransactionBase):
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 
@@ -91,5 +91,5 @@ class TransactionUpdate(BaseModel, TransactionValidators):
     date: datetime | None = None
     comment: StrictStr | None = None
 
-    class Config:
+    class ConfigDict:
         from_attributes = True

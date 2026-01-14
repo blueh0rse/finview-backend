@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from pydantic import BaseModel, StrictStr, StrictFloat, field_validator
 
 # 2–10 uppercase letters, no spaces or special characters (e.g. BTC, ETH)
-ASSET_SYMBOL_REGEX = re.compile(r"^[A-Z]{2,10}$")
+ASSET_SYMBOL_REGEX = re.compile(r"^[A-Z0-9]{2,10}$")
 
 # 2–50 characters, alphanumeric plus basic punctuation (.,'- and spaces)
 ASSET_NAME_REGEX = re.compile(r"^[A-Za-z0-9 .,'-]{2,50}$")
@@ -17,7 +17,7 @@ class AssetValidators:
     @classmethod
     def validate_symbol(cls, v: str | None) -> str | None:
         if v is not None and not ASSET_SYMBOL_REGEX.fullmatch(v):
-            raise ValueError("symbol must be 2-10 uppercase letters")
+            raise ValueError("symbol must be 2-10 uppercase letters and numbers")
         return v
 
     @field_validator("name")
@@ -65,7 +65,7 @@ class AssetBase(BaseModel, AssetValidators):
 
 
 class Asset(AssetBase):
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 
