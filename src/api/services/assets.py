@@ -1,6 +1,6 @@
 from typing import List
 
-from psycopg2 import IntegrityError
+from sqlalchemy.exc import IntegrityError
 
 from src.api.db.db import SessionLocal
 from src.api.models.assets import Asset, AssetCreate, AssetUpdate

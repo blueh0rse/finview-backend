@@ -8,6 +8,8 @@ from src.api.services.assets import (
     get_all_assets,
     get_asset_by_symbol,
     update_one_asset,
+    AssetNotFoundError,
+    AssetConflictError,
 )
 
 
@@ -17,6 +19,8 @@ router = APIRouter(tags=["Assets"])
 @router.get("/assets", response_model=List[Asset])
 async def get_assets(skip: int = 0, limit: int = 10):
     """Retrieve all assets"""
+    if skip < 0 or limit <= 0 or limit > 100:
+        raise HTTPException(status_code=400, detail="Invalid pagination parameters")
     print("[REQ] GET /assets")
     assets = await get_all_assets(skip, limit)
     return assets
@@ -43,7 +47,7 @@ async def create_asset(asset: AssetCreate):
         return created_asset
     except ValueError as e:
         # asset symbol already exists
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=409, detail=str(e))
 
 
 @router.put("/assets/{symbol}", response_model=Asset)
@@ -52,8 +56,10 @@ async def update_asset(symbol: str, asset: AssetUpdate):
     print(f"[REQ] PUT /assets/{symbol}")
     try:
         return await update_one_asset(symbol, asset)
-    except ValueError:
+    except AssetNotFoundError:
         raise HTTPException(404, "Asset not found")
+    except AssetConflictError:
+        raise HTTPException(409, "Asset conflict")
 
 
 @router.delete("/assets/{symbol}", status_code=204)

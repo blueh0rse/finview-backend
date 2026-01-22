@@ -1,6 +1,6 @@
 import re
 from datetime import datetime, timezone
-from pydantic import BaseModel, StrictStr, StrictFloat, field_validator
+from pydantic import BaseModel, ConfigDict, StrictStr, StrictFloat, field_validator
 
 # 2–10 uppercase letters, no spaces or special characters (e.g. BTC, ETH)
 ASSET_SYMBOL_REGEX = re.compile(r"^[A-Z0-9]{2,10}$")
@@ -62,6 +62,8 @@ class AssetBase(BaseModel, AssetValidators):
     category: StrictStr
     current_price: StrictFloat | None = None
     updated_at: datetime | None = None
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Asset(AssetBase):
