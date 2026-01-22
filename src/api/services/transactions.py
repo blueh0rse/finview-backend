@@ -1,8 +1,10 @@
 from typing import List
 import uuid
+from sqlalchemy.exc import IntegrityError
 from src.api.db.db import SessionLocal
-from src.api.models.transactions import Transaction
+from src.api.models.transactions import Transaction, TransactionCreate
 from src.api.schemas.transactions import TransactionORM
+from src.api.schemas.assets import AssetORM
 
 MAX_TRANSACTIONS = 100
 
@@ -28,22 +30,36 @@ async def get_transaction_by_id(transaction_id: uuid.UUID) -> Transaction:
         )
         if not tx:
             return False
-        return Transaction.model_validate(tx)
+        data = {k: v for k, v in tx.__dict__.items() if not k.startswith("_")}
+        return Transaction(**data)
     finally:
         db.close()
 
 
-async def create_one_transaction(transaction: Transaction) -> Transaction:
+async def create_one_transaction(transaction: TransactionCreate) -> Transaction:
     print(
         f"[TRANSACTION] CREATE {transaction.asset_symbol} - {transaction.operation} - {transaction.amount}{transaction.currency}"
     )
+    # Check if asset exists
     db = SessionLocal()
     try:
+        asset = (
+            db.query(AssetORM)
+            .filter(AssetORM.symbol == transaction.asset_symbol.upper())
+            .first()
+        )
+        if not asset:
+            raise ValueError(f"Asset {transaction.asset_symbol} does not exist")
+
         tx = TransactionORM(**transaction.model_dump())
         db.add(tx)
         db.commit()
         db.refresh(tx)
-        return Transaction.model_validate(tx)
+        data = {k: v for k, v in tx.__dict__.items() if not k.startswith("_")}
+        return Transaction(**data)
+    except IntegrityError:
+        db.rollback()
+        raise ValueError("Transaction creation failed due to constraint violation")
     except Exception as e:
         db.rollback()
         print("[ERROR] create_transaction:", e)
@@ -65,7 +81,8 @@ async def update_one_transaction(transaction: Transaction) -> Transaction:
             setattr(tx, key, value)
         db.commit()
         db.refresh(tx)
-        return Transaction.model_validate(tx)
+        data = {k: v for k, v in tx.__dict__.items() if not k.startswith("_")}
+        return Transaction(**data)
     except Exception as e:
         db.rollback()
         print("[ERROR] update_transaction:", e)

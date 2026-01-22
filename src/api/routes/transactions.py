@@ -21,10 +21,10 @@ router = APIRouter(tags=["Transactions"])
 @router.get("/transactions", response_model=List[Transaction])
 async def get_transactions(skip: int = 0, limit: int = 10):
     """Retrieve all transactions"""
+    if skip < 0 or limit <= 0 or limit > 100:
+        raise HTTPException(status_code=400, detail="Invalid pagination parameters")
     print("[REQ] GET /transactions")
     transactions = await get_all_transactions(skip, limit)
-    if not transactions:
-        raise HTTPException(status_code=204)
     return transactions
 
 
@@ -44,10 +44,13 @@ async def create_transaction(transaction: TransactionCreate):
     print(
         f"[REQ] POST /transactions {transaction.asset_symbol} - {transaction.operation} - {transaction.amount}{transaction.currency}"
     )
-    created_transaction = await create_one_transaction(transaction)
-    if created_transaction is None:
-        raise HTTPException(status_code=400, detail="Failed to create transaction")
-    return created_transaction
+    try:
+        created_transaction = await create_one_transaction(transaction)
+        if created_transaction is None:
+            raise HTTPException(status_code=400, detail="Failed to create transaction")
+        return created_transaction
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.put("/transactions/{transaction_id}", response_model=Transaction)
